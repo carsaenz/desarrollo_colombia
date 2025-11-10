@@ -3,7 +3,7 @@ import { doc, setDoc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase/config';
 import { useAuth } from './useAuth';
 import { RegionData } from '../types/regionData';
-import initialData from '../../../data.json'; // Importando los datos iniciales
+import initialData from '../data/data.json'; // Importando los datos iniciales
 
 export const useRegionData = (regionName: string | undefined) => {
   const { user } = useAuth();
