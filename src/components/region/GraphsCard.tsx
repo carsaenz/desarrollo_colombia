@@ -24,6 +24,20 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
+const rgbaToHex = (rgbaString: string): string => {
+  if (rgbaString.startsWith('#')) {
+    return rgbaString.substring(0, 7);
+  }
+  const result = rgbaString.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  if (!result) {
+    return '#000000'; // Fallback for invalid format
+  }
+  const r = parseInt(result[1]).toString(16).padStart(2, '0');
+  const g = parseInt(result[2]).toString(16).padStart(2, '0');
+  const b = parseInt(result[3]).toString(16).padStart(2, '0');
+  return `#${r}${g}${b}`;
+};
+
 export const GraphsCard: React.FC<GraphsCardProps> = ({ charts, onUpdate }) => {
   const { isEditMode } = useEditMode();
   const [selectedChartIndex, setSelectedChartIndex] = useState(0);
@@ -372,7 +386,7 @@ export const GraphsCard: React.FC<GraphsCardProps> = ({ charts, onUpdate }) => {
                 <input
                   type="color"
                   className="w-10 h-8 border-none rounded-md"
-                  value={dataset.borderColor}
+                  value={rgbaToHex(dataset.borderColor)}
                   onChange={(e) => handleDatasetPropertyChange(datasetIndex, 'borderColor', e.target.value)}
                   title="Color de la Línea"
                 />
