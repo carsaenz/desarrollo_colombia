@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { MapInfo } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface MapsViewProps {
   maps: MapInfo[];
-  isEditMode: boolean;
   onUpdate: (updatedMaps: MapInfo[]) => void;
 }
 
-export const MapsView: React.FC<MapsViewProps> = ({ maps, isEditMode, onUpdate }) => {
+export const MapsView: React.FC<MapsViewProps> = ({ maps, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const [localMaps, setLocalMaps] = useState<MapInfo[]>(maps);
   const [selectedMapIndex, setSelectedMapIndex] = useState(0);
 

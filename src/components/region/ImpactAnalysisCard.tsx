@@ -1,13 +1,19 @@
 import React from 'react';
 import { Impact } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface ImpactAnalysisCardProps {
   impact: Impact;
-  isEditMode: boolean;
   onUpdate: (updatedImpact: Impact) => void;
 }
 
-export const ImpactAnalysisCard: React.FC<ImpactAnalysisCardProps> = ({ impact }) => {
+export const ImpactAnalysisCard: React.FC<ImpactAnalysisCardProps> = ({ impact, onUpdate }) => {
+  const { isEditMode } = useEditMode();
+
+  const handleImpactChange = (field: keyof Impact, value: string) => {
+    onUpdate({ ...impact, [field]: value });
+  };
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-md h-full">
       <h2 className="text-2xl font-bold mb-4">Análisis de Impacto</h2>

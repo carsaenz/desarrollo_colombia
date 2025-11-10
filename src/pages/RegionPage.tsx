@@ -27,10 +27,18 @@ const RegionPageContent: React.FC = () => {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (updateSuccess) {
+      const timer = setTimeout(() => {
+        toggleEditMode();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [updateSuccess, toggleEditMode]);
+
   const handleSave = async () => {
     if (localData) {
-      await updateRegionData(localData); 
-      toggleEditMode(); // Exit edit mode after saving
+      await updateRegionData(localData);
     }
   };
 
@@ -69,7 +77,6 @@ const RegionPageContent: React.FC = () => {
       return (
         <MapsView 
           maps={mapsData} 
-          isEditMode={isEditMode} 
           onUpdate={handleMapsUpdate} 
         />
       );
@@ -79,7 +86,6 @@ const RegionPageContent: React.FC = () => {
     return (
       <SectorView 
         sectorData={localData[sectorKey]} 
-        isEditMode={isEditMode} 
         onUpdate={(updatedSectorData) => {
           setLocalData(prevData => {
             if (!prevData) return null;
@@ -117,10 +123,10 @@ const RegionPageContent: React.FC = () => {
               <>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 font-bold rounded-md bg-green-500 hover:bg-green-600 text-white transition-colors duration-200"
-                  disabled={isUpdating}
+                  className={`px-4 py-2 font-bold rounded-md text-white transition-colors duration-200 ${updateSuccess ? 'bg-blue-500' : 'bg-green-500 hover:bg-green-600'}`}
+                  disabled={isUpdating || updateSuccess}
                 >
-                  {isUpdating ? 'Guardando...' : 'Guardar'}
+                  {isUpdating ? 'Guardando...' : updateSuccess ? '¡Guardado!' : 'Guardar'}
                 </button>
                 <button
                   onClick={handleDiscard}

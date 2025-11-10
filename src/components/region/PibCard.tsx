@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { GdpData, GdpDepartment } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface PibCardProps {
   gdp: GdpData;
-  isEditMode: boolean;
   onUpdate: (updatedGdp: GdpData) => void;
 }
 
@@ -26,7 +26,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const PibCard: React.FC<PibCardProps> = ({ gdp, isEditMode, onUpdate }) => {
+export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const [view, setView] = useState<'nacional' | 'regional'>('nacional');
   const [selectedDepartmentIndex, setSelectedDepartmentIndex] = useState(0);
   const [localGdp, setLocalGdp] = useState<GdpData>(gdp);

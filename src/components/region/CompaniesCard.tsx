@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { RepresentativeCompany, CompanyDescription } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface CompaniesCardProps {
   companies: RepresentativeCompany[];
   initialActiveCompanyIndex: number;
-  isEditMode: boolean;
   onUpdate: (updatedCompanies: RepresentativeCompany[], updatedActiveIndex: number) => void;
 }
 
-export const CompaniesCard: React.FC<CompaniesCardProps> = ({ companies, initialActiveCompanyIndex, isEditMode, onUpdate }) => {
+export const CompaniesCard: React.FC<CompaniesCardProps> = ({ companies, initialActiveCompanyIndex, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const [activeCompanyIndex, setActiveCompanyIndex] = useState(initialActiveCompanyIndex);
   const [localCompanies, setLocalCompanies] = useState<RepresentativeCompany[]>(companies);
 

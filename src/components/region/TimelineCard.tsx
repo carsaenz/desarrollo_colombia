@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { TimelineEvent } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface TimelineCardProps {
   timeline: TimelineEvent[];
-  isEditMode: boolean;
   onUpdate: (updatedTimeline: TimelineEvent[]) => void;
 }
 
-export const TimelineCard: React.FC<TimelineCardProps> = ({ timeline, isEditMode, onUpdate }) => {
+export const TimelineCard: React.FC<TimelineCardProps> = ({ timeline, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const [expandedEventIndex, setExpandedEventIndex] = useState<number | null>(null);
   const [localTimeline, setLocalTimeline] = useState<TimelineEvent[]>(timeline);
 

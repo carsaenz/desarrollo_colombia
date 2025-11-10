@@ -5,14 +5,15 @@ import { ImpactAnalysisCard } from './ImpactAnalysisCard';
 import { CompaniesCard } from './CompaniesCard';
 import { PibCard } from './PibCard';
 import { TimelineCard } from './TimelineCard';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface SectorViewProps {
   sectorData: Sector;
-  isEditMode: boolean;
   onUpdate: (updatedSector: Sector) => void;
 }
 
-export const SectorView: React.FC<SectorViewProps> = ({ sectorData, isEditMode, onUpdate }) => {
+export const SectorView: React.FC<SectorViewProps> = ({ sectorData, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const handleIntroductionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onUpdate({ ...sectorData, introduction: e.target.value });
   };
@@ -56,7 +57,6 @@ export const SectorView: React.FC<SectorViewProps> = ({ sectorData, isEditMode, 
       {/* Tarjeta de Gráficas */}
       <GraphsCard 
         charts={sectorData.charts} 
-        isEditMode={isEditMode} 
         onUpdate={handleChartsUpdate} 
       />
 
@@ -65,7 +65,6 @@ export const SectorView: React.FC<SectorViewProps> = ({ sectorData, isEditMode, 
         <div className="lg:w-1/2">
           <ImpactAnalysisCard 
             impact={sectorData.impact} 
-            isEditMode={isEditMode} 
             onUpdate={handleImpactUpdate} 
           />
         </div>
@@ -73,7 +72,6 @@ export const SectorView: React.FC<SectorViewProps> = ({ sectorData, isEditMode, 
           <CompaniesCard 
             companies={sectorData.representativeCompanies} 
             initialActiveCompanyIndex={sectorData.activeCompanyIndex} 
-            isEditMode={isEditMode}
             onUpdate={handleCompaniesUpdate}
           />
         </div>
@@ -82,14 +80,12 @@ export const SectorView: React.FC<SectorViewProps> = ({ sectorData, isEditMode, 
       {/* Tarjeta de PIB y Aportes */}
       <PibCard 
         gdp={sectorData.gdp} 
-        isEditMode={isEditMode} 
         onUpdate={handleGdpUpdate} 
       />
 
       {/* Tarjeta de Línea de Tiempo */}
       <TimelineCard 
         timeline={sectorData.timeline} 
-        isEditMode={isEditMode} 
         onUpdate={handleTimelineUpdate} 
       />
     </div>

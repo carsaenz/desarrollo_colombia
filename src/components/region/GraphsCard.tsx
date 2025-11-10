@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Chart as ChartType, ChartDataSet } from '../../types/regionData';
+import { useEditMode } from '../../context/EditModeContext';
 
 interface GraphsCardProps {
   charts: ChartType[];
-  isEditMode: boolean;
   onUpdate: (updatedCharts: ChartType[]) => void;
 }
 
@@ -24,7 +24,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   return null;
 };
 
-export const GraphsCard: React.FC<GraphsCardProps> = ({ charts, isEditMode, onUpdate }) => {
+export const GraphsCard: React.FC<GraphsCardProps> = ({ charts, onUpdate }) => {
+  const { isEditMode } = useEditMode();
   const [selectedChartIndex, setSelectedChartIndex] = useState(0);
   const [localCharts, setLocalCharts] = useState<ChartType[]>(charts);
 
