@@ -17,7 +17,7 @@ export const useRegionData = (regionName: string | undefined) => {
       return;
     }
 
-    const docRef = doc(db, 'users', user.uid, 'regions', regionName);
+    const docRef = doc(db, 'regions', regionName);
 
     const unsubscribe = onSnapshot(docRef, 
       (docSnap) => {

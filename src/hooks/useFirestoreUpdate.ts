@@ -26,7 +26,7 @@ export const useFirestoreUpdate = (regionName: string | undefined) => {
     console.log("Data to save:", newData);
 
     try {
-      const docRef = doc(db, 'users', user.uid, 'regions', regionName);
+      const docRef = doc(db, 'regions', regionName);
       console.log("Document reference created. Calling updateDoc...");
       await updateDoc(docRef, newData);
       setUpdateSuccess(true);
