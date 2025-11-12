@@ -148,8 +148,9 @@ export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
     setSelectedDepartmentIndex(0);
   };
 
+  const regionNames = ["pacifica", "andina", "amazonia", "caribe", "orinoquia"];
   const nationalData = localGdp.nacional.values.map((value, index) => ({
-    name: `Región ${index + 1}`, // Assuming regions are ordered
+    name: regionNames[index] || `region ${index + 1}`,
     value: value,
     percentage: localGdp.nacional.percentages[index],
   }));
@@ -195,7 +196,7 @@ export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
               <h4 className="font-bold text-md mb-2">Editar Regiones Nacionales:</h4>
               {localGdp.nacional.values.map((value, index) => (
                 <div key={index} className="flex items-center gap-2 mb-2">
-                  <span className="w-20">Región {index + 1}:</span>
+                  <span className="w-20">{regionNames[index] || `region ${index + 1}`}:</span>
                   <input
                     type="number"
                     className="w-24 p-1 border border-gray-300 rounded-md text-sm"

@@ -20,15 +20,22 @@ export const useFirestoreUpdate = (regionName: string | undefined) => {
     setUpdateError(null);
     setUpdateSuccess(false);
 
+    console.log("Attempting to update Firestore...");
+    console.log("User ID:", user.uid);
+    console.log("Region Name:", regionName);
+    console.log("Data to save:", newData);
+
     try {
       const docRef = doc(db, 'users', user.uid, 'regions', regionName);
+      console.log("Document reference created. Calling updateDoc...");
       await updateDoc(docRef, newData);
       setUpdateSuccess(true);
       console.log("Document successfully updated!");
     } catch (e) {
-      console.error("Error updating document: ", e);
-      setUpdateError("Failed to update data in Firestore.");
+      console.error("!!! Firestore update failed. Error:", e);
+      setUpdateError("Failed to update data in Firestore. See console for details.");
     } finally {
+      console.log("Update function finished. Resetting isUpdating state.");
       setIsUpdating(false);
     }
   };
