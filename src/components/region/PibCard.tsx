@@ -150,7 +150,7 @@ export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
 
   const regionNames = ["pacifica", "andina", "amazonia", "caribe", "orinoquia"];
   const nationalData = localGdp.nacional.values.map((value, index) => ({
-    name: regionNames[index] || `region ${index + 1}`,
+    name: index < regionNames.length ? regionNames[index] : `Región Adicional ${index + 1 - regionNames.length}`,
     value: value,
     percentage: localGdp.nacional.percentages[index],
   }));
