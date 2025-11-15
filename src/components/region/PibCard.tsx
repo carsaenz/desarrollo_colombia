@@ -148,6 +148,36 @@ export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
     setSelectedDepartmentIndex(0);
   };
 
+  const handleRegionalYearAdd = () => {
+    const year = prompt("Ingrese el nuevo año:");
+    if (year && !isNaN(Number(year)) && !localGdp.regional.departments[0].activities.hasOwnProperty(year)) {
+      const updatedDepartments = localGdp.regional.departments.map(dept => ({
+        ...dept,
+        activities: {
+          ...dept.activities,
+          [year]: 0
+        }
+      }));
+      updateAndPropagate({ ...localGdp, regional: { ...localGdp.regional, departments: updatedDepartments } });
+    } else if (year) {
+      alert("Año inválido o ya existe.");
+    }
+  };
+
+  const handleRegionalYearDelete = (year: string) => {
+    if (window.confirm(`¿Está seguro de que desea eliminar el año ${year}?`)) {
+      const updatedDepartments = localGdp.regional.departments.map(dept => {
+        const newActivities = { ...dept.activities };
+        delete newActivities[year];
+        return {
+          ...dept,
+          activities: newActivities
+        };
+      });
+      updateAndPropagate({ ...localGdp, regional: { ...localGdp.regional, departments: updatedDepartments } });
+    }
+  };
+
   const regionNames = ["pacifica", "andina", "amazonia", "caribe", "orinoquia"];
   const nationalData = localGdp.nacional.values.map((value, index) => ({
     name: index < regionNames.length ? regionNames[index] : `Región Adicional ${index + 1 - regionNames.length}`,
@@ -305,9 +335,15 @@ export const PibCard: React.FC<PibCardProps> = ({ gdp, onUpdate }) => {
                           value={currentDepartment.activities[year]}
                           onChange={(e) => handleDepartmentActivityChange(year, e.target.value)}
                         />
+                        <button onClick={() => handleRegionalYearDelete(year)} className="px-2 py-1 bg-red-400 text-white rounded-md text-sm hover:bg-red-500">
+                          Eliminar
+                        </button>
                       </div>
                     ))}
                   </div>
+                  <button onClick={handleRegionalYearAdd} className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 mt-2">
+                    Añadir Año
+                  </button>
                   <h5 className="font-bold text-md mb-2 mt-4">Editar Porcentajes por Actividad:</h5>
                   <div className="flex flex-wrap gap-2">
                     {Object.keys(currentDepartment.percentages).filter(key => !['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024'].includes(key)).map((activity) => (
