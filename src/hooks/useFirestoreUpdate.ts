@@ -40,5 +40,10 @@ export const useFirestoreUpdate = (regionName: string | undefined) => {
     }
   };
 
-  return { updateRegionData, isUpdating, updateError, updateSuccess };
+  const resetUpdateStatus = () => {
+    setUpdateSuccess(false);
+    setUpdateError(null);
+  };
+
+  return { updateRegionData, isUpdating, updateError, updateSuccess, resetUpdateStatus };
 };

@@ -16,7 +16,7 @@ const RegionPageContent: React.FC = () => {
   const { data, loading, error } = useRegionData(regionName);
   const [currentView, setCurrentView] = useState<ViewType>('Primario');
   const { isEditMode, toggleEditMode } = useEditMode();
-  const { updateRegionData, isUpdating, updateError, updateSuccess } = useFirestoreUpdate(regionName);
+  const { updateRegionData, isUpdating, updateError, updateSuccess, resetUpdateStatus } = useFirestoreUpdate(regionName);
 
   // Local state to hold changes before saving
   const [localData, setLocalData] = useState<RegionData | null>(null);
@@ -27,14 +27,12 @@ const RegionPageContent: React.FC = () => {
     }
   }, [data]);
 
-  useEffect(() => {
-    if (updateSuccess) {
-      const timer = setTimeout(() => {
-        toggleEditMode();
-      }, 2000);
-      return () => clearTimeout(timer);
+  const handleToggleEditMode = () => {
+    if (!isEditMode) {
+      resetUpdateStatus();
     }
-  }, [updateSuccess, toggleEditMode]);
+    toggleEditMode();
+  };
 
   const handleSave = async () => {
     if (localData) {
@@ -138,7 +136,7 @@ const RegionPageContent: React.FC = () => {
               </>
             )}
             <button
-              onClick={toggleEditMode}
+              onClick={handleToggleEditMode}
               className={`px-4 py-2 font-bold rounded-md transition-colors duration-200 ${isEditMode ? 'bg-yellow-400 text-black' : 'bg-gray-600 text-white hover:bg-gray-500'}`}
             >
               {isEditMode ? 'Salir de Edición' : 'Modo Edición'}

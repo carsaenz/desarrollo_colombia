@@ -11,6 +11,7 @@ export const MapsView: React.FC<MapsViewProps> = ({ maps, onUpdate }) => {
   const { isEditMode } = useEditMode();
   const [localMaps, setLocalMaps] = useState<MapInfo[]>(maps);
   const [selectedMapIndex, setSelectedMapIndex] = useState(0);
+  const [isMaximized, setIsMaximized] = useState(false);
 
   useEffect(() => {
     setLocalMaps(maps);
@@ -143,7 +144,12 @@ export const MapsView: React.FC<MapsViewProps> = ({ maps, onUpdate }) => {
             />
           ) : (
             currentMap.image && (
-              <img src={currentMap.image} alt={currentMap.title} className="w-full h-auto object-contain mb-4 rounded-md" />
+              <div className="relative group cursor-pointer h-64 w-full overflow-hidden rounded-md mb-4" onClick={() => setIsMaximized(true)}>
+                <img src={currentMap.image} alt={currentMap.title} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-opacity duration-300 flex justify-center items-center">
+                  <span className="text-white text-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">Ampliar</span>
+                </div>
+              </div>
             )
           )}
           
@@ -185,6 +191,31 @@ export const MapsView: React.FC<MapsViewProps> = ({ maps, onUpdate }) => {
               )}
             </div>
           )}
+        </div>
+      )}
+
+      {isMaximized && currentMap && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50 p-4" 
+          onClick={() => setIsMaximized(false)}
+        >
+          <div 
+            className="relative w-full h-full max-w-6xl max-h-full" 
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img 
+              src={currentMap.image} 
+              alt={currentMap.title} 
+              className="w-full h-full object-contain" 
+            />
+            <button 
+              onClick={() => setIsMaximized(false)} 
+              className="absolute top-4 right-4 text-white text-4xl font-bold"
+              aria-label="Cerrar"
+            >
+              &times;
+            </button>
+          </div>
         </div>
       )}
     </div>
