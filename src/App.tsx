@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import HomePage from './pages/HomePage';
 import RegionPage from './pages/RegionPage';
@@ -6,7 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
   return (
-    <BrowserRouter basename="/analisis-regiones-colombia">
+    <HashRouter>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route 
@@ -26,7 +26,7 @@ function App() {
           } 
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
